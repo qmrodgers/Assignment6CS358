@@ -16,7 +16,7 @@ namespace ConsoleApplication61
             //Class ReadFile lets us perform this on multiple files without getting too complex
             ReadFile studentFile = new ReadFile("Students.txt");
 
-            studentFile.addStudent("Malachi", "None", "Constant", "5675431823", "fakeemail@hotmail.com", 4.0);
+            studentFile.addStudent("Malachi", "Constant", 4.0, "5675431823", "fakeemail@hotmail.com");
 
             studentFile.highGPACount();
 
@@ -137,6 +137,8 @@ namespace ConsoleApplication61
 
 
         }
+
+        //Needed to complete write to file
         public void closeOutput()
         {
             output.Close();
@@ -165,6 +167,7 @@ namespace ConsoleApplication61
             Thread.Sleep(3000);
         }
 
+        //gets count of students (ASSIGNMENT)
         public void studentCount()
         {
             int count = 0;
@@ -186,7 +189,8 @@ namespace ConsoleApplication61
             inFile = new StreamReader(fileLocation);
         }
 
-        public void addStudent(string FirstName, string Initial, string LastName, string PhoneNo, string Email, double GPA)
+        // adds student, some optional parameters exist
+        public void addStudent(string FirstName, string LastName, double GPA, string PhoneNo = "NONE", string Email = "NONE", string Initial = "NONE")
         {
             string currName;
             string tempFileLoc = directory + "temp.txt";
@@ -219,6 +223,8 @@ namespace ConsoleApplication61
 
             inFile = new StreamReader(fileLocation);
         }
+
+        //Present in every function that needs to read values from the file.
         public string[] GetValue()
         {
             string sub = "";
@@ -278,7 +284,7 @@ namespace ConsoleApplication61
             inFile = new StreamReader(fileLocation);
         }
 
-        //Lists the count of people with a given last name.
+        //Lists the count of people with a given last name. (ASSIGNMENT)
         public void LastNames(string lastname)
         {
             int count = 0;
@@ -310,7 +316,7 @@ namespace ConsoleApplication61
         }
 
 
-        //Lists a count of all people with a GPA of 3.0 or above
+        //Lists a count of all people with a GPA of 3.0 or above (ASSIGNMENT)
         public void highGPACount()
         {
             string[] lineValues = GetValue();
@@ -351,6 +357,7 @@ namespace ConsoleApplication61
             inFile = new StreamReader(fileLocation);
         }
 
+        // Returns average GPA  (ASSIGNMENT)
         public double averageGPA()
         {
             string[] lineValues = GetValue();
@@ -379,6 +386,8 @@ namespace ConsoleApplication61
 
             return average;
         }
+
+        // takes averageGPA and lists it (ASSIGNMENT)
         public void listAverageGPA()
         {
             Console.Write($"Average GPA is {averageGPA()}");
@@ -394,7 +403,7 @@ namespace ConsoleApplication61
             Thread.Sleep(300);
         }
 
-        //extra method to grab email counts
+        //extra method to grab email counts (ASSIGNMENT)
         private int emailAddresses(string email = null)
         {
             string[] lineValues = GetValue();
@@ -424,7 +433,7 @@ namespace ConsoleApplication61
             }
         }
 
-
+        // lists empty emails (those with "NONE") (ASSIGNMENT)
         public void countEmptyEmails()
         {
             Console.Write($"There are {emailAddresses("NONE")} students with no email");
