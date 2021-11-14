@@ -1,4 +1,5 @@
-﻿using System;
+﻿//created by Quaid Rodgers
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,29 +13,25 @@ namespace ConsoleApplication61
     {
         static void Main(string[] args)
         {
-
+            //Class ReadFile lets us perform this on multiple files without getting too complex
             ReadFile studentFile = new ReadFile("Students.txt");
 
-
-            studentFile.listLastNames();
+            studentFile.addStudent("Malachi", "None", "Constant", "5675431823", "fakeemail@hotmail.com", 4.0);
 
             studentFile.highGPACount();
 
-            Thread.Sleep(300);
-            Console.Write(".");
-            Thread.Sleep(300);
-            Console.Write(".");
-            Thread.Sleep(300);
-            Console.WriteLine(".");
-            Thread.Sleep(300);
-            Thread.Sleep(4000);
+            studentFile.LastNames("Anderson");
 
-            studentFile.listFile();
+            studentFile.countEmptyEmails();
 
-            //studentFile.addStudent("Malachi", "None", "Constant", "5675431823", "fakeemail@hotmail.com", 4.0);
-            Thread.Sleep(2000);
+            studentFile.listAverageGPA();
 
-            studentFile.listFile();
+            studentFile.studentCount();
+
+            //studentFile.listFile();
+
+            studentFile.closeOutput();
+
             Console.ReadKey();
         }
 
@@ -43,6 +40,7 @@ namespace ConsoleApplication61
 
     public class ReadFile
     {
+        private StreamWriter output;
         private StreamReader inFile;
         private string fileLocation;
         private string directory;
@@ -84,6 +82,12 @@ namespace ConsoleApplication61
             findDirectory(fileLocation);
 
             Console.WriteLine($"File Read Successfully: {temp}");
+
+            if (!File.Exists("Output.txt"));
+            {
+                File.Create("Output.txt").Dispose();
+            }
+            output = new StreamWriter("Output.txt");
         }
         public ReadFile(string fileLocationPara)
         {
@@ -125,7 +129,17 @@ namespace ConsoleApplication61
             findDirectory(fileLocation);
             Console.WriteLine($"File Read Successfully: {temp}");
 
+            if (!File.Exists("Output.txt")) ;
+            {
+                File.Create("Output.txt").Dispose();
+            }
+            output = new StreamWriter("Output.txt");
 
+
+        }
+        public void closeOutput()
+        {
+            output.Close();
         }
 
         private void findDirectory(string path)
@@ -149,6 +163,27 @@ namespace ConsoleApplication61
 
             Console.WriteLine("Done listing file");
             Thread.Sleep(3000);
+        }
+
+        public void studentCount()
+        {
+            int count = 0;
+            string[] lineValues = GetValue();
+            while (lineValues[0] != "QUIT")
+            {
+                count++;
+                lineValues = GetValue();
+            }
+            Console.Write($"There are {count} total students.");
+            output.WriteLine($"There are {count} total students.");
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.WriteLine(".");
+            Thread.Sleep(300);
+            inFile = new StreamReader(fileLocation);
         }
 
         public void addStudent(string FirstName, string Initial, string LastName, string PhoneNo, string Email, double GPA)
@@ -198,19 +233,21 @@ namespace ConsoleApplication61
             {
                 values[0] = "QUIT"; values[1] = "QUIT"; values[2] = "QUIT"; values[3] = "QUIT"; values[4] = "QUIT"; values[5] = "QUIT"; return values;
             }
-            sub = inLine.Substring(inLine.IndexOf("'") + 1);
+            sub = inLine;
+            
+            sub = sub.Substring(inLine.IndexOf("'") + 1);
             // values[2] = last name
             values[2] = sub.Substring(0, sub.IndexOf(" "));
-            sub = sub.Substring(sub.IndexOf("'") + 1);
+            sub = sub.Substring(sub.IndexOf(" ") + 2);
             // values[0] = first name
             values[0] = sub.Substring(0, sub.IndexOf(" "));
-            sub = sub.Substring(sub.IndexOf("'") + 1);
+            sub = sub.Substring(sub.IndexOf(" ") + 2);
             // values[1] = initial
             values[1] = sub.Substring(0, sub.IndexOf(" "));
             sub = sub.Substring(sub.IndexOf("'") + 1);
             // values[3] = Phone
             values[3] = sub.Substring(0, sub.IndexOf(" "));
-            sub = sub.Substring(sub.IndexOf("'") + 1);
+            sub = sub.Substring(sub.IndexOf(" ") + 2);
             // values[4] = email
             values[4] = sub.Substring(0, sub.IndexOf(" "));
             sub = sub.Substring(sub.IndexOf(" ") + 1);
@@ -221,7 +258,9 @@ namespace ConsoleApplication61
             return values;
         }
 
-        public void listLastNames()
+
+        //generic method (not part of assignment) to list all last names in the list.
+        public void LastNames()
         {
             string[] lineValues = GetValue();
             while (lineValues[0] != "QUIT")
@@ -229,7 +268,7 @@ namespace ConsoleApplication61
 
                 Console.WriteLine(lineValues[2]);
                 lineValues = GetValue();
-
+                
             }
 
 
@@ -239,6 +278,39 @@ namespace ConsoleApplication61
             inFile = new StreamReader(fileLocation);
         }
 
+        //Lists the count of people with a given last name.
+        public void LastNames(string lastname)
+        {
+            int count = 0;
+            string[] lineValues = GetValue();
+            while (lineValues[2] != "QUIT")
+            {
+                if(lineValues[2] == lastname)
+                {
+                    count++;
+                }
+                lineValues = GetValue();
+
+            }
+
+            Console.Write($"There are {count} people with the last name {lastname}");
+            output.WriteLine($"There are {count} people with the last name {lastname}.");
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.WriteLine(".");
+            Thread.Sleep(300);
+
+
+
+
+            inFile = new StreamReader(fileLocation);
+        }
+
+
+        //Lists a count of all people with a GPA of 3.0 or above
         public void highGPACount()
         {
             string[] lineValues = GetValue();
@@ -248,16 +320,17 @@ namespace ConsoleApplication61
             while (lineValues[5] != "QUIT")
             {
                 try
-                {
-                    if (Convert.ToDouble(lineValues[5]) >= 0)
+                  {
+                    if (Double.Parse(lineValues[5]) >= 3.0)
                     {
-                        count++;
+                        count++;  
                     }
 
                     lineValues = GetValue();
                 }
                 catch (Exception)
                 {
+                    Console.WriteLine("Exception in highGPACount, something in the document violates formatting rules.");
                     break;
                 }
             }
@@ -266,6 +339,7 @@ namespace ConsoleApplication61
 
 
             Console.Write($"The total number of students with a 3.0 or above GPA is: {count}");
+            output.WriteLine($"The total number of students with a 3.0 or above GPA is: {count}.");
             Thread.Sleep(300);
             Console.Write(".");
             Thread.Sleep(300);
@@ -275,6 +349,94 @@ namespace ConsoleApplication61
             Thread.Sleep(300);
 
             inFile = new StreamReader(fileLocation);
+        }
+
+        public double averageGPA()
+        {
+            string[] lineValues = GetValue();
+            double average = 0;
+            int count = 0;
+            double sum = 0;
+
+            while (lineValues[5] != "QUIT")
+            {
+                try
+                {
+                    sum = sum + Double.Parse(lineValues[5]);
+                    count++;
+
+                    lineValues = GetValue();
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Exception in highGPACount, something in the document violates formatting rules.");
+                    break;
+                }
+            }
+
+            average = sum / count;
+            inFile = new StreamReader(fileLocation);
+
+            return average;
+        }
+        public void listAverageGPA()
+        {
+            Console.Write($"Average GPA is {averageGPA()}");
+            output.WriteLine($"Average GPA is {averageGPA()}");
+
+
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.WriteLine(".");
+            Thread.Sleep(300);
+        }
+
+        //extra method to grab email counts
+        private int emailAddresses(string email = null)
+        {
+            string[] lineValues = GetValue();
+            int count = 0;
+            if (email == null)
+            {
+                while (lineValues[2] != "QUIT")
+                {
+                    count++;
+                    lineValues = GetValue();
+
+                }
+                inFile = new StreamReader(fileLocation);
+                return count;
+            }
+            else
+            {
+                while (lineValues[2] != "QUIT")
+                {
+                    if (lineValues[4] == email) count++;
+                    lineValues = GetValue();
+
+
+                }
+                inFile = new StreamReader(fileLocation);
+                return count;
+            }
+        }
+
+
+        public void countEmptyEmails()
+        {
+            Console.Write($"There are {emailAddresses("NONE")} students with no email");
+            output.WriteLine($"There are {emailAddresses("NONE")} students with no email.");
+
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.WriteLine(".");
+            Thread.Sleep(300);
         }
     }
 }

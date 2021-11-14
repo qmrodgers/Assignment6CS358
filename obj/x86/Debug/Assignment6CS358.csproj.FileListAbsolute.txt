@@ -3,4 +3,4 @@ C:\Users\quaid\source\repos\Assignment6CS358\bin\Debug\ConsoleApplication.exe
 C:\Users\quaid\source\repos\Assignment6CS358\bin\Debug\ConsoleApplication.pdb
 C:\Users\quaid\source\repos\Assignment6CS358\obj\x86\Debug\ConsoleApplication.exe
 C:\Users\quaid\source\repos\Assignment6CS358\obj\x86\Debug\ConsoleApplication.pdb
-C:\Users\quaid\source\repos\Assignment6CS358\obj\x86\Debug\Assignment6CS358.csprojAssemblyReference.cache
+C:\Users\quaid\source\repos\Assignment6CS358\obj\x86\Debug\Assignment6CS358.csproj.AssemblyReference.cache

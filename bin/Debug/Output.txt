@@ -1,0 +1,5 @@
+The total number of students with a 3.0 or above GPA is: 4167.
+There are 20 people with the last name Anderson.
+There are 19 students with no email.
+Average GPA is 2.80295646145415
+There are 10492 total students.
