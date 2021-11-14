@@ -15,6 +15,20 @@ namespace ConsoleApplication61
 
             ReadFile studentFile = new ReadFile("Students.txt");
 
+
+            studentFile.listLastNames();
+
+            studentFile.highGPACount();
+
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.WriteLine(".");
+            Thread.Sleep(300);
+            Thread.Sleep(4000);
+
             studentFile.listFile();
 
             //studentFile.addStudent("Malachi", "None", "Constant", "5675431823", "fakeemail@hotmail.com", 4.0);
@@ -124,10 +138,10 @@ namespace ConsoleApplication61
             }
             else directory = "";
         }
-        
+
         public void listFile()
         {
-            
+
 
             //Does same thing
             Console.WriteLine(inFile.ReadToEnd());
@@ -170,21 +184,97 @@ namespace ConsoleApplication61
 
             inFile = new StreamReader(fileLocation);
         }
-        public string[] GetValue() 
+        public string[] GetValue()
         {
+            string sub = "";
             string[] values = new string[6];
+
             inLine = inFile.ReadLine();
-            if (!inLine.Contains("'"))
+            if (inLine == "( students (LIST")
             {
-                values[0] = ""; values[1] = ""; values[2] = ""; values[3] = ""; values[4] = ""; values[5] = ""; return values;
+                inLine = inFile.ReadLine();
+            }
+            else if (inLine == " ) )")
+            {
+                values[0] = "QUIT"; values[1] = "QUIT"; values[2] = "QUIT"; values[3] = "QUIT"; values[4] = "QUIT"; values[5] = "QUIT"; return values;
+            }
+            sub = inLine.Substring(inLine.IndexOf("'") + 1);
+            // values[2] = last name
+            values[2] = sub.Substring(0, sub.IndexOf(" "));
+            sub = sub.Substring(sub.IndexOf("'") + 1);
+            // values[0] = first name
+            values[0] = sub.Substring(0, sub.IndexOf(" "));
+            sub = sub.Substring(sub.IndexOf("'") + 1);
+            // values[1] = initial
+            values[1] = sub.Substring(0, sub.IndexOf(" "));
+            sub = sub.Substring(sub.IndexOf("'") + 1);
+            // values[3] = Phone
+            values[3] = sub.Substring(0, sub.IndexOf(" "));
+            sub = sub.Substring(sub.IndexOf("'") + 1);
+            // values[4] = email
+            values[4] = sub.Substring(0, sub.IndexOf(" "));
+            sub = sub.Substring(sub.IndexOf(" ") + 1);
+            // values[5] = GPA
+            values[5] = sub.Substring(0, sub.IndexOf(" "));
+
+
+            return values;
+        }
+
+        public void listLastNames()
+        {
+            string[] lineValues = GetValue();
+            while (lineValues[0] != "QUIT")
+            {
+
+                Console.WriteLine(lineValues[2]);
+                lineValues = GetValue();
+
             }
 
-            values[0] = inLine.Substring(inLine.Substring(inLine.IndexOf("'")).IndexOf("'")), ;
+
+
+
+
+            inFile = new StreamReader(fileLocation);
         }
 
         public void highGPACount()
         {
+            string[] lineValues = GetValue();
+            int count = 0;
 
+
+            while (lineValues[5] != "QUIT")
+            {
+                try
+                {
+                    if (Convert.ToDouble(lineValues[5]) >= 0)
+                    {
+                        count++;
+                    }
+
+                    lineValues = GetValue();
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+            }
+
+
+
+
+            Console.Write($"The total number of students with a 3.0 or above GPA is: {count}");
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.Write(".");
+            Thread.Sleep(300);
+            Console.WriteLine(".");
+            Thread.Sleep(300);
+
+            inFile = new StreamReader(fileLocation);
         }
     }
 }

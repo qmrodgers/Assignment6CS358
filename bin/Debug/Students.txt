@@ -1812,6 +1812,7 @@
 (LIST (LIST 'Consalus 'Al 'E ) '8698383839 'AEConsalus@mail.usi.edu 2.0794356447247946 )
 (LIST (LIST 'Consalus 'Betty 'J ) '8698689687 'BJConsalus@mail.usi.edu 2.925078679851801 )
 (LIST (LIST 'Constant 'Malachi 'None ) '5675431823 'fakeemail@hotmail.com 4 )
+(LIST (LIST 'Constant 'Malachi 'None ) '5675431823 'fakeemail@hotmail.com 4 )
 (LIST (LIST 'Conville 'Al 'L ) '8698998696 'ALConville@mail.usi.edu 3.1868386594223224 )
 (LIST (LIST 'Conway 'Al 'D ) '8698689988 'ADConway@mail.usi.edu 2.517772588370445 )
 (LIST (LIST 'Conway 'Betty 'S ) '8698689973 'BSConway@mail.usi.edu 1.974757111876514 )
